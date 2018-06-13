@@ -1,0 +1,29 @@
+using System;
+using System.Diagnostics;
+using Moq;
+
+namespace CastleProblem
+{
+    public class Test38
+    {
+        private readonly Mock<IClass38> aClass;
+
+        public Test38()
+        {
+            this.aClass = new Mock<IClass38>();
+        }
+
+        public void DoSomething()
+        {
+            try
+            {
+                this.aClass.Setup(x => x.DoSomething()).Returns(true);
+                bool result = this.aClass.Object.DoSomething();
+            }
+            catch (BadImageFormatException)
+            {
+                Debugger.Launch();
+            }
+        }
+    }
+}
