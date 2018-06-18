@@ -35,9 +35,9 @@ namespace DuplicateClass
                     {
                         newContent.Add(fileContent[line].Replace(className, newClassName));
                     }
-                    else if (fileContent[line].Contains("Mock<IClass>"))
+                    else if (fileContent[line].Contains("IClass"))
                     {
-                        newContent.Add(fileContent[line].Replace("Mock<IClass", "Mock<IClass" + i));
+                        newContent.Add(fileContent[line].Replace("IClass", "IClass" + i));
                     }
                     else
                     {
