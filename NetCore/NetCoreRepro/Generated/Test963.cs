@@ -1,24 +1,16 @@
 using System;
 using System.Diagnostics;
-using Moq;
 
 namespace NetCoreRepro.ToDuplicate
 {
     public class Test963
     {
-        private readonly Mock<IClass963> aClass;
-
-        public Test963()
-        {
-            this.aClass = new Mock<IClass963>();
-        }
-
         public void DoSomething()
         {
             try
             {
-                this.aClass.Setup(x => x.DoSomething()).Returns(true);
-                bool result = this.aClass.Object.DoSomething();
+                var aClass = ProxyFactory.CreateProxy<IClass963>();
+                bool result = aClass.DoSomething();
             }
             catch (BadImageFormatException)
             {
