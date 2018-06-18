@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace NetCoreRepro
@@ -36,8 +37,17 @@ namespace NetCoreRepro
                 foreach (Exception innerException in ex.InnerExceptions)
                 {
                     Console.Error.WriteLine();
-                    Console.Error.WriteLine(innerException.Message);
-                    Console.Error.WriteLine(innerException.StackTrace);
+
+                    if (innerException is TargetInvocationException tiex)
+                    {
+                        Console.Error.WriteLine(tiex.InnerException.Message);
+                        Console.Error.WriteLine(tiex.InnerException.StackTrace);
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine(innerException.Message);
+                        Console.Error.WriteLine(innerException.StackTrace);
+                    }
                 }
             }
         }
