@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Converter;
+﻿using System.IO;
 
 namespace DuplicateClass
 {
@@ -10,49 +8,15 @@ namespace DuplicateClass
 
         public static void Main(string[] args)
         {
-            var filesToDuplicate = RetrieveFilesToDublicate(Path.Combine(RootDirectory, "ToDuplicate"));
-            foreach (var filePath in filesToDuplicate)
+            using (var fileWriter = File.CreateText(Path.Combine(RootDirectory, "IClassN.cs")))
             {
-                DuplicateFile(filePath, 1000);
-            }
-        }
+                fileWriter.WriteLine($"public class Base {{ public virtual void DoSomething() {{ }} }}");
 
-        private static void DuplicateFile(string path, int count)
-        {
-            var fileName = Path.GetFileName(path);
-            var fileContent = FileReader.ReadLines(path);
-            string[] fileParts = fileName.Split('.');
-            var className = fileParts[0];
-            for (int i = 1; i <= count; i++)
-            {
-                string newFileName = fileParts[0] + i + "." + fileParts[1];
-                string newClassName = className + i;
-                var newContent = new List<string>();
-                var newPath = Path.Combine(Path.Combine(RootDirectory, "Generated"), newFileName);
-                for (int line = 0; line < fileContent.Count; line++)
+                for (int i = 1; i <= 1000; ++i)
                 {
-                    if (fileContent[line].Contains("public class " + className) || fileContent[line].Contains("public " + className + "()") || fileContent[line].Contains("public interface " + className))
-                    {
-                        newContent.Add(fileContent[line].Replace(className, newClassName));
-                    }
-                    else if (fileContent[line].Contains("IClass"))
-                    {
-                        newContent.Add(fileContent[line].Replace("IClass", "IClass" + i));
-                    }
-                    else
-                    {
-                        newContent.Add(fileContent[line]);
-                    }
+                    fileWriter.WriteLine($"public class Derived{i} : Base {{ }}");
                 }
-
-                FileWriter.WriteFile(newContent, newPath);
             }
-
-        }
-
-        public static IReadOnlyList<string> RetrieveFilesToDublicate(string basePath)
-        {
-            return Directory.GetFiles(basePath, "*.cs", SearchOption.TopDirectoryOnly);
         }
     }
 }
