@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
+using System.Globalization;
 using System.Threading.Tasks;
-
-using Castle.DynamicProxy;
+using NetCoreRepro;
 
 public class Program
 {
     public static void Main()
     {
-        var proxyGenerator = new ProxyGenerator();
-        var typesToProxy = Assembly.GetExecutingAssembly().GetExportedTypes().Where(t => t.Name.StartsWith("Derived"));
-
         try
         {
-            Parallel.ForEach(typesToProxy, typeToProxy =>
+            Parallel.For(0, 99999, index =>
             {
-                var proxy = (Base)proxyGenerator.CreateClassProxy(typeToProxy);
+                Type t = TypeGenerator.CreateClass(index.ToString(CultureInfo.InvariantCulture));
+                Activator.CreateInstance(t);
             });
         }
         catch (Exception ex)

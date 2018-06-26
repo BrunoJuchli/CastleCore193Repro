@@ -12,8 +12,4 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.3.1" />
-  </ItemGroup>
-
 </Project>
