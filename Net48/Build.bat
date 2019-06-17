@@ -1,0 +1,1 @@
+dotnet publish .\NetCoreRepro -c DEBUG -r win10-x64 --self-contained
